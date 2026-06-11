@@ -200,3 +200,12 @@ To set up the project for development:
    ```bash
    pytest
    ```
+
+## Release Process
+
+This project uses [Release Please](https://github.com/googleapis/release-please) to automate versioning and changelog generation.
+
+To trigger a release:
+1. Merge your changes into the `main` branch using [Conventional Commits](https://www.conventionalcommits.org/) (e.g., `feat: add new feature`, `fix: resolve bug`).
+2. Release Please will automatically create or update a Release PR.
+3. When you are ready to release, merge the Release PR. This will tag the release and update the changelog.

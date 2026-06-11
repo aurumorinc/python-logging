@@ -7,7 +7,7 @@ from python_logging.config import settings
 def get_windmill_context() -> Dict[str, str]:
     """
     Extracts trace_id and span_id from the TRACEPARENT environment variable.
-    
+
     Returns:
         A dictionary containing 'trace_id' and 'span_id' if found, otherwise an empty dictionary.
     """

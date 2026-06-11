@@ -25,4 +25,5 @@ class LoggingSettings(BaseSettings):
         extra="ignore",
     )
 
+
 settings = LoggingSettings()

@@ -31,4 +31,7 @@ def test_settings_from_env():
     assert settings.log_level == "DEBUG"
     assert settings.stdout_format == StdoutFormat.RICH
     assert settings.otel_exporter_otlp_endpoint == "http://localhost:4317"
-    assert settings.traceparent == "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01"
+    assert (
+        settings.traceparent
+        == "00-0af7651916cd43dd8448eb211c80319c-b7ad6b7169203331-01"
+    )

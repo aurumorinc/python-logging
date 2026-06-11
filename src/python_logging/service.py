@@ -15,9 +15,9 @@ def get_console_renderer_format() -> Tuple[List[Any], List[logging.Handler]]:
     processors = [
         structlog.dev.ConsoleRenderer(colors=True),
     ]
-    
+
     handler = logging.StreamHandler(sys.stdout)
-    
+
     return processors, [handler]
 
 
@@ -31,7 +31,7 @@ def get_rich_format() -> Tuple[List[Any], List[logging.Handler]]:
     processors = [
         structlog.stdlib.render_to_log_kwargs,
     ]
-    
+
     handler = RichHandler(
         rich_tracebacks=True,
         markup=True,
@@ -39,5 +39,5 @@ def get_rich_format() -> Tuple[List[Any], List[logging.Handler]]:
         show_level=True,
         show_path=False,
     )
-    
+
     return processors, [handler]

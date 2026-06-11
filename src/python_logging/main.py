@@ -5,7 +5,11 @@ from typing import Optional
 import structlog
 from opentelemetry.sdk._logs import LoggingHandler
 
-from python_logging.config import LoggingSettings, StdoutFormat, settings as default_settings
+from python_logging.config import (
+    LoggingSettings,
+    StdoutFormat,
+    settings as default_settings,
+)
 from python_logging.service import get_console_renderer_format, get_rich_format
 from python_logging.integrations.otel import add_otel_context, setup_otel_provider
 
@@ -46,7 +50,9 @@ def setup_logging(settings: Optional[LoggingSettings] = None) -> None:
     if settings.stdout_format == StdoutFormat.RICH:
         structlog_processors = shared_processors + format_processors
     else:
-        structlog_processors = shared_processors + [structlog.stdlib.ProcessorFormatter.wrap_for_formatter]
+        structlog_processors = shared_processors + [
+            structlog.stdlib.ProcessorFormatter.wrap_for_formatter
+        ]
 
     structlog.configure(
         processors=structlog_processors,
@@ -69,7 +75,7 @@ def setup_logging(settings: Optional[LoggingSettings] = None) -> None:
                 foreign_pre_chain=shared_processors,
             )
             handler.setFormatter(formatter)
-        
+
         root_logger.addHandler(handler)
 
     # Setup OpenTelemetry OTLP transport if configured

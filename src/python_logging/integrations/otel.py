@@ -40,13 +40,15 @@ def setup_otel_provider() -> Optional[LoggerProvider]:
     """
     Initializes the OpenTelemetry LoggerProvider with an OTLP exporter if configured.
     """
-    if not (settings.otel_exporter_otlp_endpoint or settings.otel_exporter_otlp_logs_endpoint):
+    if not (
+        settings.otel_exporter_otlp_endpoint
+        or settings.otel_exporter_otlp_logs_endpoint
+    ):
         return None
 
     logger_provider = LoggerProvider()
     exporter = OTLPLogExporter()
     logger_provider.add_log_record_processor(BatchLogRecordProcessor(exporter))
-    
+
     set_logger_provider(logger_provider)
     return logger_provider
-
