@@ -1,4 +1,6 @@
 # src/python_logging/__init__.py
+__version__ = "2026.2.0"
+
 from python_logging import config
 from python_logging import integrations
 from python_logging import main
@@ -25,6 +27,7 @@ from python_logging.service import (
 )
 
 __all__ = [
+    "__version__",
     "LoggingSettings",
     "StdoutFormat",
     "add_otel_context",
