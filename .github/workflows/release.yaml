@@ -1,0 +1,12 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-central-release:
+    uses: aurumorinc/.github/.github/workflows/release.yaml@main
+    secrets:
+      RELEASE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
