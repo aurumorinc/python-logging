@@ -2,13 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026.6.1] - 2026-06-12
-
-### 🎨 Styling
-
-- Clean up whitespace and formatting in tests
-
-## [2026.6.0] - 2026-06-12
+## [26.6.0] - 2026-06-12
 
 ### 🚀 Features
 
@@ -41,6 +35,10 @@ All notable changes to this project will be documented in this file.
 - Update documentation for logging integration
 - Update minimum python version requirement
 
+### 🎨 Styling
+
+- Clean up whitespace and formatting in tests
+
 ### 🧪 Testing
 
 - Add unit tests for OTel integration
@@ -63,6 +61,9 @@ All notable changes to this project will be documented in this file.
 - Add automated release workflow
 - Revert project version to 2026.2.0
 - Release 2026.6.0
+- Release 2026.6.1
+- Update project version to 26.2.1
+- Update version pattern in bumpver configuration
 
 ### Build
 
