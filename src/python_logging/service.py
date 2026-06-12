@@ -12,7 +12,6 @@ from opentelemetry.sdk._logs.export import BatchLogRecordProcessor
 from rich.logging import RichHandler
 
 from python_logging.config import settings
-from python_logging.integrations.windmill import get_windmill_context
 
 
 def get_console_renderer_format() -> Tuple[List[Any], List[logging.Handler]]:
@@ -56,7 +55,7 @@ def add_otel_context(
 ) -> Dict[str, Any]:
     """
     Injects OpenTelemetry trace_id and span_id into the log record.
-    Falls back to Windmill context if no active OTel span is found.
+    Falls back to the settings trace_id and span_id if no active OTel span is found.
     """
     # 1. Try to get it from the active OTel span
     span = trace.get_current_span()
@@ -65,12 +64,9 @@ def add_otel_context(
         event_dict["trace_id"] = format(ctx.trace_id, "032x")
         event_dict["span_id"] = format(ctx.span_id, "016x")
     else:
-        # 2. Fallback to the context stored in Windmill TRACEPARENT
-        windmill_ctx = get_windmill_context()
-        if "trace_id" in windmill_ctx:
-            event_dict["trace_id"] = windmill_ctx["trace_id"]
-        if "span_id" in windmill_ctx:
-            event_dict["span_id"] = windmill_ctx["span_id"]
+        # 2. Fallback to the context stored in settings
+        event_dict["trace_id"] = settings.trace_id
+        event_dict["span_id"] = settings.span_id
 
     return event_dict
 

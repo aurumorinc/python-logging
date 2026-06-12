@@ -27,18 +27,16 @@ def test_add_otel_context_with_active_span():
             assert result["span_id"] == format(ctx.span_id, "016x")
 
 
-@mock.patch("python_logging.service.get_windmill_context")
-def test_add_otel_context_fallback_to_windmill(mock_get_windmill_context):
-    mock_get_windmill_context.return_value = {
-        "trace_id": "windmill_trace",
-        "span_id": "windmill_span",
-    }
+@mock.patch("python_logging.service.settings")
+def test_add_otel_context_fallback_to_settings(mock_settings):
+    mock_settings.trace_id = "settings_trace"
+    mock_settings.span_id = "settings_span"
 
     event_dict = {}
     result = add_otel_context(logging.getLogger(), "info", event_dict)
 
-    assert result["trace_id"] == "windmill_trace"
-    assert result["span_id"] == "windmill_span"
+    assert result["trace_id"] == "settings_trace"
+    assert result["span_id"] == "settings_span"
 
 
 @mock.patch("python_logging.service.settings")
