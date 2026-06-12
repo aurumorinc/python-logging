@@ -27,7 +27,7 @@ dev = [
 
 [tool.bumpver]
 current_version = "26.2.1"
-version_pattern = "YY.MINOR.MICRO"
+version_pattern = "YY.MINOR.PATCH"
 commit = false
 tag = false
 push = false
