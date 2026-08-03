@@ -1,11 +1,11 @@
-# Worldline
+# python-logging
 
-Worldline is a unified observability and telemetry bootstrapper for Python. It provides structured, environment-agnostic logging alongside native vendor facades for Sentry, PostHog, Langfuse, and OpenTelemetry. Built on top of `structlog`, `rich`, and `opentelemetry`, Worldline allows you to configure your entire observability stack with a single function call while maintaining direct access to underlying native SDKs.
+`python-logging` is a unified observability and telemetry bootstrapper for Python. It provides structured, environment-agnostic logging alongside native vendor facades for Sentry, PostHog, Langfuse, and OpenTelemetry. Built on top of `structlog`, `rich`, and `opentelemetry`, `python-logging` allows you to configure your entire observability stack with a single function call while maintaining direct access to underlying native SDKs.
 
 ## Features
 
-- **Zero-Config Bootstrapper**: Simply importing from `worldline` eagerly configures your entire telemetry stack (Logging, Sentry, PostHog, Langfuse, and OpenTelemetry) based on the presence of environment variables.
-- **Submodule Vendor Re-export**: Access Sentry and PostHog natively directly through `worldline` (e.g., `from worldline import sentry_sdk`). This preserves original typings and API surfaces while keeping dependency versions centralized in this package. For Langfuse, please import directly from the `langfuse` package.
+- **Zero-Config Bootstrapper**: Simply importing from `python_logging` eagerly configures your entire telemetry stack (Logging, Sentry, PostHog, Langfuse, and OpenTelemetry) based on the presence of environment variables.
+- **Submodule Vendor Re-export**: Access Sentry and PostHog natively directly through `python_logging` (e.g., `from python_logging import sentry_sdk`). This preserves original typings and API surfaces while keeping dependency versions centralized in this package. For Langfuse, please import directly from the `langfuse` package.
 - **Structured Logging**: Powered by `structlog` for consistent, machine-readable logs.
 - **Decoupled Transports**: 
   - **Terminal Transport (stdout)**: Always active, beautifully formatted with `rich`.
@@ -23,17 +23,17 @@ Worldline is a unified observability and telemetry bootstrapper for Python. It p
 You can install this package directly from the GitHub repository using `pip`:
 
 ```bash
-pip install git+https://github.com/aurumorinc/worldline-python.git
+pip install git+https://github.com/aurumorinc/python-logging.git
 ```
 
-*(Note: While the repository is `worldline-python`, the importable package is `worldline`)*
+*(Note: While the repository is `python-logging`, the importable package is `python_logging`)*
 
 ## Quickstart
 
-Telemetry and logging are eagerly initialized on package import. By simply importing from `worldline`, the global observability state is configured automatically.
+Telemetry and logging are eagerly initialized on package import. By simply importing from `python_logging`, the global observability state is configured automatically.
 
 ```python
-from worldline import structlog
+from python_logging import structlog
 
 # 1. Get a logger instance for this module
 logger = structlog.get_logger(__name__)

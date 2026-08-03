@@ -1,13 +1,13 @@
 # Usage Guide
 
-**CRITICAL RULE:** Telemetry and logging are eagerly initialized on Python startup via zero-touch auto-instrumentation (using a `.pth` file). By simply installing `worldline`, the global observability state is configured automatically via environment variables before your application code even runs.
+**CRITICAL RULE:** Telemetry and logging are eagerly initialized on Python startup via zero-touch auto-instrumentation (using a `.pth` file). By simply installing `python-logging`, the global observability state is configured automatically via environment variables before your application code even runs.
 
 If you ever need to disable this behavior (e.g., for certain testing environments), set the environment variable:
-`WORLDLINE_DISABLE_AUTO_INSTRUMENTATION=true`
+`LOGGING_DISABLE_AUTO_INSTRUMENTATION=true`
 
 ## Basic Logging Usage
 
-Because `worldline` modifies the global `structlog` state at initialization, you use the standard `structlog` package directly throughout your codebase.
+Because `python_logging` modifies the global `structlog` state at initialization, you use the standard `structlog` package directly throughout your codebase.
 
 ```python
 import structlog
@@ -42,7 +42,7 @@ logger.info("request_completed", status=200)
 
 ## Vendor Integrations
 
-`worldline` automatically initializes Sentry, PostHog, and Langfuse globally if their respective configuration variables are present in the environment. You simply import the standard vendor libraries directly in your consumer application.
+`python_logging` automatically initializes Sentry, PostHog, and Langfuse globally if their respective configuration variables are present in the environment. You simply import the standard vendor libraries directly in your consumer application.
 
 ```python
 import sentry_sdk
@@ -65,11 +65,11 @@ def my_llm_call(prompt):
 
 If you configure `WINDMILL_TOKEN` and `WINDMILL_WORKSPACE`, logs and traces will automatically be exported to the Windmill platform.
 
-`worldline` will also automatically extract the active `trace_id` and `span_id` and inject them into your log records. When running inside Windmill, it automatically extracts tracing contexts from the environment.
+`python_logging` will also automatically extract the active `trace_id` and `span_id` and inject them into your log records. When running inside Windmill, it automatically extracts tracing contexts from the environment.
 
 ## Terminal Output
 
-Worldline uses `rich.logging.RichHandler` for beautiful, structured formatting in the terminal.
+`python-logging` uses `rich.logging.RichHandler` for beautiful, structured formatting in the terminal.
 
 **Configuration:**
 ```bash
