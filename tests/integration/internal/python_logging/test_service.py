@@ -5,19 +5,19 @@ from unittest import mock
 import pytest
 import structlog
 
-from worldline.service import setup
+from python_logging.service import setup
 
 
 @pytest.fixture(autouse=True)
 def reset_state():
     """Reset the module-level state before and after each test."""
-    import worldline.service as service_module
+    import python_logging.service as service_module
 
-    service_module._WORLDLINE_CONFIGURED = False
+    service_module._LOGGING_CONFIGURED = False
     structlog.reset_defaults()
     logging.getLogger().handlers.clear()
     yield
-    service_module._WORLDLINE_CONFIGURED = False
+    service_module._LOGGING_CONFIGURED = False
     structlog.reset_defaults()
     logging.getLogger().handlers.clear()
 
@@ -47,15 +47,15 @@ def test_standard_logging_capture():
 
 def test_setup_configures_otel(in_memory_otel_exporters):
     """Test that when configuring OTEL, OpenTelemetry records the logs."""
-    from worldline.config import WorldlineSettings
+    from python_logging.config import LoggingSettings
 
-    settings = WorldlineSettings(
+    settings = LoggingSettings(
         windmill_token="windmill_dummy_token",
         windmill_workspace="windmill_ws",
         traceparent="00-12345678901234567890123456789012-1234567890123456-01",
     )
 
-    with mock.patch("worldline.service.settings", settings):
+    with mock.patch("python_logging.service.settings", settings):
         setup(settings)
 
         logger = structlog.get_logger("integration_logger")
