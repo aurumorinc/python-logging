@@ -1,10 +1,10 @@
-# tests/unit/worldline/test_service.py
+# tests/unit/python_logging/test_service.py
 import logging
 from unittest import mock
 
 
-import worldline.service as service_module
-from worldline.service import (
+import python_logging.service as service_module
+from python_logging.service import (
     add_otel_context,
     get_console_format,
     remove_otel_context,
@@ -24,7 +24,9 @@ def test_add_otel_context_with_active_span():
         ctx = span.get_span_context()
         event_dict = {}
 
-        with mock.patch("worldline.service.trace.get_current_span", return_value=span):
+        with mock.patch(
+            "python_logging.service.trace.get_current_span", return_value=span
+        ):
             # Act
             result = add_otel_context(logging.getLogger(), "info", event_dict)
 
@@ -33,7 +35,7 @@ def test_add_otel_context_with_active_span():
             assert result["span_id"] == format(ctx.span_id, "016x")
 
 
-@mock.patch("worldline.service.settings")
+@mock.patch("python_logging.service.settings")
 def test_add_otel_context_fallback_to_settings(mock_settings):
     # Arrange
     mock_settings.trace_id = "settings_trace"
@@ -49,7 +51,7 @@ def test_add_otel_context_fallback_to_settings(mock_settings):
     assert result["span_id"] == "settings_span"
 
 
-@mock.patch("worldline.service.settings")
+@mock.patch("python_logging.service.settings")
 def test_add_otel_context_empty_event_dict(mock_settings):
     """Test adding context to an empty dict still adds trace_id and span_id."""
     # Arrange
@@ -64,7 +66,7 @@ def test_add_otel_context_empty_event_dict(mock_settings):
     assert result == {"trace_id": "1", "span_id": "2"}
 
 
-@mock.patch("worldline.service.settings")
+@mock.patch("python_logging.service.settings")
 def test_setup_otel_provider_no_endpoint(mock_settings):
     # Arrange
     mock_settings.is_windmill_env = False
@@ -76,7 +78,7 @@ def test_setup_otel_provider_no_endpoint(mock_settings):
     assert provider is None
 
 
-@mock.patch("worldline.service.settings")
+@mock.patch("python_logging.service.settings")
 def test_setup_otel_provider_with_endpoint(mock_settings):
     # Arrange
     mock_settings.is_windmill_env = True
@@ -146,7 +148,7 @@ def test_get_console_format():
 
 
 @mock.patch.dict("os.environ", {}, clear=True)
-@mock.patch("worldline.integrations.structlog.setup_structlog")
+@mock.patch("python_logging.integrations.structlog.setup_structlog")
 @mock.patch("langfuse.Langfuse")
 @mock.patch("posthog.project_api_key", create=True)
 @mock.patch("posthog.host", create=True)
@@ -159,12 +161,12 @@ def test_setup_orchestration(
     mock_setup_structlog,
 ):
     """Test that setup() correctly orchestrates integrations based on settings."""
-    from worldline.config import WorldlineSettings
+    from python_logging.config import LoggingSettings
 
     # Reset state
-    service_module._WORLDLINE_CONFIGURED = False
+    service_module._LOGGING_CONFIGURED = False
 
-    settings = WorldlineSettings(
+    settings = LoggingSettings(
         sentry_dsn="https://dummy@sentry.io/123",
         posthog_api_key="ph_key",
         posthog_host="ph_host",
@@ -196,14 +198,14 @@ def test_setup_orchestration(
         mock_setup_structlog.assert_called_once_with(settings)
 
         # Assert state
-        assert service_module._WORLDLINE_CONFIGURED is True
+        assert service_module._LOGGING_CONFIGURED is True
 
 
-@mock.patch("worldline.integrations.structlog.setup_structlog")
+@mock.patch("python_logging.integrations.structlog.setup_structlog")
 def test_setup_idempotency(mock_setup_structlog):
     """Test that setup() is idempotent."""
     # Reset state
-    service_module._WORLDLINE_CONFIGURED = False
+    service_module._LOGGING_CONFIGURED = False
 
     setup()
     setup()

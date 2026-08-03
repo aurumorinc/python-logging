@@ -1,16 +1,16 @@
-# tests/unit/worldline/test_config.py
+# tests/unit/python_logging/test_config.py
 import os
 import re
 from unittest import mock
 import pytest
 
-from worldline.config import WorldlineSettings, generate_traceparent
+from python_logging.config import LoggingSettings, generate_traceparent
 
 
 def test_default_settings():
     """Test that default settings are correctly applied and traceparent is generated."""
     # Arrange & Act
-    settings = WorldlineSettings()
+    settings = LoggingSettings()
 
     # Assert
     assert settings.log_level == "INFO"
@@ -40,7 +40,7 @@ def test_default_settings():
 def test_settings_from_env():
     """Test that settings are correctly loaded from environment variables."""
     # Arrange & Act
-    settings = WorldlineSettings()
+    settings = LoggingSettings()
 
     # Assert
     assert settings.log_level == "DEBUG"
@@ -63,7 +63,7 @@ def test_settings_from_env():
 def test_settings_from_windmill_env():
     """Test that settings correctly fallback to WM_TRACEPARENT."""
     # Arrange & Act
-    settings = WorldlineSettings()
+    settings = LoggingSettings()
 
     # Assert
     assert (
@@ -84,7 +84,7 @@ def test_settings_from_windmill_env():
 def test_settings_precedence_env_over_windmill():
     """Test that TRACEPARENT takes precedence over WM_TRACEPARENT."""
     # Arrange & Act
-    settings = WorldlineSettings()
+    settings = LoggingSettings()
 
     # Assert
     assert (
@@ -97,22 +97,22 @@ def test_settings_precedence_env_over_windmill():
 
 def test_is_windmill_env():
     # Arrange, Act, Assert
-    settings = WorldlineSettings(windmill_token="t", windmill_workspace="w")
+    settings = LoggingSettings(windmill_token="t", windmill_workspace="w")
     assert settings.is_windmill_env is True
 
-    settings = WorldlineSettings(windmill_token="t", windmill_workspace=None)
+    settings = LoggingSettings(windmill_token="t", windmill_workspace=None)
     assert settings.is_windmill_env is False
 
-    settings = WorldlineSettings(windmill_token=None, windmill_workspace="w")
+    settings = LoggingSettings(windmill_token=None, windmill_workspace="w")
     assert settings.is_windmill_env is False
 
-    settings = WorldlineSettings(windmill_token=None, windmill_workspace=None)
+    settings = LoggingSettings(windmill_token=None, windmill_workspace=None)
     assert settings.is_windmill_env is False
 
 
 def test_vendor_defaults():
     # Arrange & Act
-    settings = WorldlineSettings()
+    settings = LoggingSettings()
 
     # Assert
     assert settings.posthog_host == "https://us.i.posthog.com"
@@ -121,8 +121,8 @@ def test_vendor_defaults():
 
 
 @mock.patch.dict(os.environ, {}, clear=True)
-def test_worldline_settings_populates_environ():
-    """Test that instantiating WorldlineSettings populates os.environ correctly."""
+def test_logging_settings_populates_environ():
+    """Test that instantiating LoggingSettings populates os.environ correctly."""
     # Arrange
     test_env = {
         "langfuse_public_key": "lf-pub-key-123",
@@ -134,7 +134,7 @@ def test_worldline_settings_populates_environ():
     }
 
     # Act
-    WorldlineSettings(**test_env)
+    LoggingSettings(**test_env)
 
     # Assert
     assert os.environ.get("LANGFUSE_PUBLIC_KEY") == "lf-pub-key-123"
@@ -147,7 +147,7 @@ def test_worldline_settings_populates_environ():
 
 
 @mock.patch.dict(os.environ, {}, clear=True)
-def test_worldline_settings_populates_environ_with_langfuse_host():
+def test_logging_settings_populates_environ_with_langfuse_host():
     """Test that langfuse_host takes precedence over langfuse_base_url."""
     # Arrange
     test_env = {
@@ -156,7 +156,7 @@ def test_worldline_settings_populates_environ_with_langfuse_host():
     }
 
     # Act
-    WorldlineSettings(**test_env)
+    LoggingSettings(**test_env)
 
     # Assert
     assert os.environ.get("LANGFUSE_BASE_URL") == "https://prioritized.langfuse.com"
@@ -178,7 +178,7 @@ def test_generate_traceparent():
 def test_malformed_traceparent_fails():
     """Test that setting a malformed traceparent that doesn't split to 4 parts raises an exception on computed access."""
     # Arrange & Act
-    settings = WorldlineSettings(traceparent="malformed")
+    settings = LoggingSettings(traceparent="malformed")
 
     # Assert
     with pytest.raises(IndexError):
