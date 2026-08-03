@@ -1,39 +1,39 @@
-# src/worldline/__init__.py
+# src/python_logging/__init__.py
 __version__ = "2.1.0"
 
 import os
 import sys
 
 # Auto-instrumentation execution block
-if not getattr(sys, "_WORLDLINE_INITIALIZED", False):
-    setattr(sys, "_WORLDLINE_INITIALIZED", True)
+if not getattr(sys, "_LOGGING_INITIALIZED", False):
+    setattr(sys, "_LOGGING_INITIALIZED", True)
 
-    if os.environ.get("WORLDLINE_DISABLE_AUTO_INSTRUMENTATION", "").lower() != "true":
+    if os.environ.get("LOGGING_DISABLE_AUTO_INSTRUMENTATION", "").lower() != "true":
         try:
-            from worldline.service import setup
+            from python_logging.service import setup
 
             setup()
         except Exception as e:
-            sys.stderr.write(f"Worldline auto-instrumentation failed: {e}\n")
+            sys.stderr.write(f"Auto-instrumentation failed: {e}\n")
 
 # <AUTOGEN_INIT>
-from worldline import config
-from worldline import integrations
-from worldline import service
+from python_logging import config
+from python_logging import integrations
+from python_logging import service
 
-from worldline.config import (
-    WorldlineSettings,
+from python_logging.config import (
+    LoggingSettings,
     generate_traceparent,
     resolve_traceparent,
     settings,
 )
-from worldline.integrations import (
+from python_logging.integrations import (
     get_windmill_traceparent,
     setup_structlog,
     structlog,
     windmill,
 )
-from worldline.service import (
+from python_logging.service import (
     add_otel_context,
     get_console_format,
     remove_otel_context,
@@ -42,7 +42,7 @@ from worldline.service import (
 )
 
 __all__ = [
-    "WorldlineSettings",
+    "LoggingSettings",
     "add_otel_context",
     "config",
     "generate_traceparent",
