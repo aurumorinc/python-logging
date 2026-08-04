@@ -1,5 +1,5 @@
 # src/python_logging/__init__.py
-__version__ = "2.1.0"
+__version__ = "3.0.0"
 
 import os
 import sys
