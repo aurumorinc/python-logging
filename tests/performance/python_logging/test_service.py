@@ -1,12 +1,14 @@
+import re
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from io import StringIO
 from unittest import mock
 
 import structlog
-from worldline.service import setup
-import worldline.service as service_module
-from worldline.config import WorldlineSettings
+
+from python_logging.config import LoggingSettings
+import python_logging.service as service_module
+from python_logging.service import setup
 
 
 def test_thread_safe_contextvars():
@@ -15,11 +17,11 @@ def test_thread_safe_contextvars():
     under concurrent load.
     """
     # Reset structlog
-    service_module._WORLDLINE_CONFIGURED = False
+    service_module._LOGGING_CONFIGURED = False
     structlog.reset_defaults()
 
     # Arrange
-    settings = WorldlineSettings()
+    settings = LoggingSettings()
     out = StringIO()
 
     with mock.patch("sys.stdout", out):
@@ -48,8 +50,6 @@ def test_thread_safe_contextvars():
 
         # Assert
         output_str = out.getvalue()
-
-        import re
 
         expected_matches = re.finditer(
             r"expected_uuid=[']?([a-f0-9\-]+)[']?", output_str

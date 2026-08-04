@@ -1,12 +1,13 @@
 # Configuration
 
-Worldline configuration is handled via environment variables (or a `.env` file) using `pydantic-settings`.
+`python-logging` configuration is handled via environment variables (or a `.env` file) using `pydantic-settings`.
 
 ## Environment Variables
 
 | Environment Variable | Default | Description |
 | :--- | :--- | :--- |
 | `LOG_LEVEL` | `INFO` | The logging level (e.g., `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`). |
+| `LOGGING_DISABLE_AUTO_INSTRUMENTATION` | `false` | Set to `true` to disable zero-touch auto-instrumentation on package import. |
 | `SENTRY_DSN` | `None` | The DSN for Sentry. If provided, Sentry will be automatically initialized. |
 | `POSTHOG_API_KEY` | `None` | Project API Key for PostHog. If provided, PostHog will be automatically configured. |
 | `POSTHOG_HOST` | `https://us.i.posthog.com` | Host URL for PostHog. |
@@ -22,14 +23,14 @@ Worldline configuration is handled via environment variables (or a `.env` file) 
 
 ## Integrating with Project Settings (Pydantic)
 
-If your project already uses `pydantic-settings`, you can easily merge the telemetry configuration into your main settings class by inheriting from `WorldlineSettings`. This allows you to validate all environment variables (both app-specific and logging-specific) in one place.
+If your project already uses `pydantic-settings`, you can easily merge the telemetry configuration into your main settings class by inheriting from `LoggingSettings`. This allows you to validate all environment variables (both app-specific and logging-specific) in one place.
 
 ```python
 from pydantic_settings import BaseSettings
-from worldline import WorldlineSettings
+from python_logging import LoggingSettings
 
-# Inherit from WorldlineSettings to include logging configuration
-class Settings(WorldlineSettings, BaseSettings):
+# Inherit from LoggingSettings to include logging configuration
+class Settings(LoggingSettings, BaseSettings):
     app_name: str = "my-awesome-app"
     database_url: str
 

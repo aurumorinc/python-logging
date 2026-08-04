@@ -1,4 +1,4 @@
-# src/worldline/config.py
+# src/python_logging/config.py
 import os
 import secrets
 from typing import Any, Optional
@@ -20,7 +20,7 @@ def resolve_traceparent() -> str:
     1. Windmill environment variable (WM_TRACEPARENT)
     2. Generated fallback
     """
-    from worldline.integrations.windmill import get_windmill_traceparent
+    from python_logging.integrations.windmill import get_windmill_traceparent
 
     windmill_tp = get_windmill_traceparent()
     if windmill_tp:
@@ -28,8 +28,8 @@ def resolve_traceparent() -> str:
     return generate_traceparent()
 
 
-class WorldlineSettings(BaseSettings):
-    """Configuration for the lume package."""
+class LoggingSettings(BaseSettings):
+    """Configuration for the python_logging package."""
 
     log_level: str = "INFO"
     otel_exporter_otlp_endpoint: Optional[str] = None
@@ -90,4 +90,4 @@ class WorldlineSettings(BaseSettings):
             os.environ["SENTRY_DSN"] = self.sentry_dsn
 
 
-settings = WorldlineSettings()
+settings = LoggingSettings()

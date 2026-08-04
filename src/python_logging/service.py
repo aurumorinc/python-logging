@@ -1,4 +1,4 @@
-# src/worldline/service.py
+# src/python_logging/service.py
 import logging
 import sys
 from typing import Any, Dict, List, Optional, Tuple
@@ -14,18 +14,18 @@ from structlog.dev import (
     RichTracebackFormatter,
 )
 
-from worldline.config import settings
+from python_logging.config import settings
 
 
-_WORLDLINE_CONFIGURED: bool = False
+_LOGGING_CONFIGURED: bool = False
 
 
 def setup(settings_override: Optional[Any] = None) -> None:
     """
-    Orchestrates the setup of all Worldline integrations (Sentry, PostHog, Langfuse, Structlog).
+    Orchestrates the setup of all integrations (Sentry, PostHog, Langfuse, Structlog).
     """
-    global _WORLDLINE_CONFIGURED
-    if _WORLDLINE_CONFIGURED:
+    global _LOGGING_CONFIGURED
+    if _LOGGING_CONFIGURED:
         return
 
     current_settings = settings_override if settings_override else settings
@@ -54,11 +54,11 @@ def setup(settings_override: Optional[Any] = None) -> None:
         )
 
     # 4. Structlog Setup
-    from worldline.integrations.structlog import setup_structlog
+    from python_logging.integrations.structlog import setup_structlog
 
     setup_structlog(current_settings)
 
-    _WORLDLINE_CONFIGURED = True
+    _LOGGING_CONFIGURED = True
 
 
 def remove_otel_context(

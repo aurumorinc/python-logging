@@ -1,4 +1,4 @@
-# src/worldline/integrations/structlog.py
+# src/python_logging/integrations/structlog.py
 """
 structlog configuration logic.
 """
@@ -9,16 +9,16 @@ from typing import TYPE_CHECKING, Any, List, Optional
 import structlog
 
 if TYPE_CHECKING:
-    from worldline.config import WorldlineSettings
+    from python_logging.config import LoggingSettings
 
 
-def setup_structlog(settings: Optional["WorldlineSettings"] = None) -> None:
+def setup_structlog(settings: Optional["LoggingSettings"] = None) -> None:
     """
     Internal zero-config initialization.
     Configures structlog and routes standard logging through it.
     """
     if settings is None:
-        from worldline.config import settings as default_settings
+        from python_logging.config import settings as default_settings
 
         settings = default_settings
 
@@ -27,7 +27,7 @@ def setup_structlog(settings: Optional["WorldlineSettings"] = None) -> None:
     log_level = getattr(logging, log_level_name, logging.INFO)
 
     # Shared processors
-    from worldline.service import (
+    from python_logging.service import (
         add_otel_context,
         get_console_format,
         setup_otel_provider,

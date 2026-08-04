@@ -1,7 +1,7 @@
 import os
 from unittest import mock
 
-from worldline.integrations.windmill import get_windmill_traceparent
+from python_logging.integrations.windmill import get_windmill_traceparent
 
 
 @mock.patch.dict(
